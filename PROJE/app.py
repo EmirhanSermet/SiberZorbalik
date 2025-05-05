@@ -5,6 +5,27 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 # Flask uygulaması
 app = Flask(__name__)
 
+tahmin = model.predict(text_tfidf)[0]
+if tahmin == "bully":
+    tahmin = "Zorbalık"
+else:
+    tahmin = "Zorbalık değil"
+return render_template('index.html', prediction=tahmin, text=text)
+
+
+@app.route('/egitim')
+def egitim():
+    return render_template('egitim.html')
+
+@app.route('/istatistik')
+def istatistik():
+    return render_template('istatistik.html')
+
+@app.route('/hakkinda')
+def hakkinda():
+    return render_template('hakkinda.html')
+
+
 # Modeli ve vectorizer'ı yükle
 with open('model.pkl', 'rb') as f:
     model = pickle.load(f)

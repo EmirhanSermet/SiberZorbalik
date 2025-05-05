@@ -17,9 +17,9 @@
       <nav>
         <ul>
           <li><a href="{{ url_for('home') }}" class="active">Mesaj Analizi</a></li>
-          <li><a href="eğitim.html">Eğitim</a></li>
-          <li><a href="istatistik.html">İstatistik</a></li>
-          <li><a href="hakkinda.html">Hakkında</a></li>
+          <li><a href="{{ url_for('egitim') }}">Eğitim</a></li>
+          <li><a href="{{ url_for('istatistik') }}">İstatistik</a></li>
+          <li><a href="{{ url_for('hakkinda') }}">Hakkında</a></li> 
         </ul>
       </nav>
       <button class="logout">Çıkış Yap</button>
@@ -65,6 +65,18 @@
       </div>
     </div>
   </div>
+  {% if prediction %}
+  <div id="sonuc" class="alert-box">
+    Tahmin: <strong>{{ prediction }}</strong>
+  </div>
+  {% endif %}
+
+  {% if prediction|lower == 'zorbalık' %}
+  <div id="result" class="warning" style="display: block;">
+    ⚠️ Bu mesaj siber zorbalık içermektedir.
+  </div>
+  {% endif %}
+
 
 </body>
 </html>
