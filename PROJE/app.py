@@ -30,22 +30,23 @@ with open('vectorizer.pkl', 'rb') as f:
 # Tahmin
 @app.route('/predict', methods=['POST'])
 def predict():
-    data = request.get_json()
-    text = data.get('text', '').strip()
+    text = request.form.get('text', '').strip()
 
     if not text:
-        return {"tahmin": "Lütfen metin girin."}
+        return render_template('index.html', prediction="Lütfen metin girin.", text=text)
 
     try:
         text_tfidf = vectorizer.transform([text])
 
         if text_tfidf.nnz == 0:
-            return {"tahmin": "Metin eğitim verisindeki kelimeleri içermiyor."}
+            return render_template('index.html', prediction="Metin eğitim verisindeki kelimeleri içermiyor.", text=text)
 
         prediction = model.predict(text_tfidf)
-        return {"tahmin": prediction[0]}
+        return render_template('index.html', prediction=prediction[0], text=text)
 
     except Exception as e:
-        return {"tahmin": f"Hata: {str(e)}"}
+        return render_template('index.html', prediction=f"Hata: {str(e)}", text=text)
+
+
 if __name__ == "__main__":
     app.run(debug=True)
