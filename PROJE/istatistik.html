@@ -1,0 +1,59 @@
+<!-- istatistik.html -->
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Zorbalık Kalkanı - İstatistikler</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="sidebar">
+      <h2><img src="logo.png" alt="logo"> Zorbalık Kalkanı</h2>
+      <ul>
+        <li><a href="index.html">Mesaj Analizi</a></li>
+        <li><a href="egitim.html">Eğitim</a></li>
+        <li><a class="active" href="istatistik.html">İstatistik</a></li>
+        <li><a href="hakkinda.html">Hakkında</a></li>
+      </ul>
+      <button class="logout">Çıkış Yap</button>
+    </div>
+
+    <div class="main-content">
+      <h1>📊 Güncel İstatistikler</h1>
+      <div class="info-cards">
+        <div class="card fade-in">
+          <h3>Bugün Analiz Edilen Mesaj Sayısı</h3>
+          <p><span id="totalMessages">0</span> mesaj</p>
+        </div>
+        <div class="card fade-in">
+          <h3>Zorbalık İçeren Mesaj Oranı</h3>
+          <p><span id="bullyRate">0%</span></p>
+        </div>
+        <div class="card fade-in">
+          <h3>Canlı Sayaç</h3>
+          <p>Her 10 saniyede bir güncelleniyor</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Sahte istatistik verisi
+    let total = 250;
+    let bully = 42;
+
+    function updateStats() {
+      document.getElementById("totalMessages").textContent = total;
+      document.getElementById("bullyRate").textContent = ((bully / total) * 100).toFixed(1) + "%";
+
+      // örnek: her 10 saniyede bir rastgele artış
+      total += Math.floor(Math.random() * 5);
+      bully += Math.floor(Math.random() * 2);
+    }
+
+    updateStats();
+    setInterval(updateStats, 10000);
+  </script>
+</body>
+</html>
