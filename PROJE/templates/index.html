@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Zorbalık Kalkanı - Mesaj Analizi</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h2>
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" />
+        Zorbalık Kalkanı
+      </h2>
+      <nav>
+        <ul>
+          <li><a href="{{ url_for('home') }}" class="active">Mesaj Analizi</a></li>
+          <li><a href="eğitim.html">Eğitim</a></li>
+          <li><a href="istatistik.html">İstatistik</a></li>
+          <li><a href="hakkinda.html">Hakkında</a></li>
+        </ul>
+      </nav>
+      <button class="logout">Çıkış Yap</button>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="form-container">
+      <h2>Mesajını Gir</h2>
+      <form action="{{ url_for('predict') }}" method="post">
+        <textarea name="text" id="metin" placeholder="Buraya mesajını yaz..." required>{{ text if text else '' }}</textarea>
+        <button type="submit">Gönder</button>
+      </form>
+
+      {% if prediction %}
+        <div id="sonuc" class="alert-box">
+          Tahmin: <strong>{{ prediction }}</strong>
+        </div>
+
+        {% if prediction|lower == 'zorbalık' %}
+          <div id="result" class="warning" style="display: block;">
+            ⚠️ Bu mesaj siber zorbalık içermektedir.
+          </div>
+        {% endif %}
+      {% endif %}
+    </div>
+
+    <div class="info-cards">
+      <div class="card fade-in" id="bullyExamples" {% if not prediction or prediction|lower != 'zorbalık' %}style="display: none;"{% endif %}>
+        <h3>Zorbalık Örnekleri</h3>
+        <ul>
+          <li>Kimse seni sevmiyor.</li>
+          <li>Sen çok aptalsın.</li>
+          <li>Buraya ait değilsin.</li>
+        </ul>
+      </div>
+
+      <div class="card fade-in">
+        <h3>İstatistikler</h3>
+        <p>
+          <strong>18%</strong><br />
+          Bugün tespit edilen zararlı mesaj oranı
+        </p>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
