@@ -5,14 +5,6 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 # Flask uygulaması
 app = Flask(__name__)
 
-tahmin = model.predict(text_tfidf)[0]
-if tahmin == "bully":
-    tahmin = "Zorbalık"
-else:
-    tahmin = "Zorbalık değil"
-return render_template('index.html', prediction=tahmin, text=text)
-
-
 @app.route('/egitim')
 def egitim():
     return render_template('egitim.html')
@@ -24,7 +16,6 @@ def istatistik():
 @app.route('/hakkinda')
 def hakkinda():
     return render_template('hakkinda.html')
-
 
 # Modeli ve vectorizer'ı yükle
 with open('model.pkl', 'rb') as f:
@@ -49,20 +40,3 @@ def predict():
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-
-import pickle
-
-# Flask uygulamanla aynı klasörde 'model.pkl' dosyasını aç
-with open('model.pkl', 'rb') as f:
-    model = pickle.load(f)
-
-print("Model başarıyla yüklendi!")
-
-import pickle
-
-# Flask uygulamanla aynı klasörde 'vectorizer.pkl' dosyasını aç
-with open('vectorizer.pkl', 'rb') as f:
-    vectorizer = pickle.load(f)
-
-print("Vectorizer başarıyla yüklendi!")
