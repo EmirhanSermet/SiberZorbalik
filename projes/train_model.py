@@ -21,6 +21,10 @@ X_test_tfidf = vectorizer.transform(X_test)
 model = MultinomialNB()
 model.fit(X_train_tfidf, y_train)
 
+# Test verisi üzerinde modelin doğruluğunu kontrol et
+accuracy = model.score(X_test_tfidf, y_test)
+print(f"Model doğruluğu: {accuracy * 100:.2f}%")
+
 # Modeli ve vectorizer'ı kaydet
 with open('model.pkl', 'wb') as f:
     pickle.dump(model, f)

@@ -9,7 +9,7 @@
 <body>
   <div class="container">
     <div class="sidebar">
-      <h2><img src="logo.png" alt="logo"> Zorbalık Kalkanı</h2>
+      <h2><img src="{{ url_for('static', filename='logo.png') }}" alt="logo"> Zorbalık Kalkanı</h2>
       <ul>
           <li><a href="{{ url_for('home') }}">Mesaj Analizi</a></li>
           <li><a href="{{ url_for('egitim') }}">Eğitim</a></li>

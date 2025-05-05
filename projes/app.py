@@ -1,8 +1,7 @@
 from flask import Flask, request, render_template
 import pickle
 
-app = Flask(__name__)
-
+app = Flask(__name__,static_folder='static')
 # Sayfalar
 @app.route('/')
 def home():
@@ -26,6 +25,25 @@ with open('model.pkl', 'rb') as f:
 
 with open('vectorizer.pkl', 'rb') as f:
     vectorizer = pickle.load(f)
+
+@app.route('/live_predict', methods=['POST'])
+def live_predict():
+    text = request.json.get('text', '').strip()
+
+    if not text:
+        return {"prediction": "Lütfen metin girin."}
+
+    try:
+        text_tfidf = vectorizer.transform([text])
+
+        if text_tfidf.nnz == 0:
+            return {"prediction": "Metin eğitim verisindeki kelimeleri içermiyor."}
+
+        prediction = model.predict(text_tfidf)
+        return {"prediction": prediction[0]}
+
+    except Exception as e:
+        return {"prediction": f"Hata: {str(e)}"}
 
 # Tahmin
 @app.route('/predict', methods=['POST'])

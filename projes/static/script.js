@@ -38,4 +38,5 @@ async function analizEt() {
     result.style.display = "block";
     exampleCard.style.display = "none";
   }
+
 }
