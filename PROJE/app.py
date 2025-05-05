@@ -1,9 +1,12 @@
 from flask import Flask, request, render_template
 import pickle
-from sklearn.feature_extraction.text import TfidfVectorizer
 
-# Flask uygulaması
 app = Flask(__name__)
+
+# Sayfalar
+@app.route('/')
+def home():
+    return render_template('index.html')
 
 @app.route('/egitim')
 def egitim():
@@ -17,26 +20,32 @@ def istatistik():
 def hakkinda():
     return render_template('hakkinda.html')
 
-# Modeli ve vectorizer'ı yükle
+# Model ve vectorizer'ı yükle
 with open('model.pkl', 'rb') as f:
     model = pickle.load(f)
 
 with open('vectorizer.pkl', 'rb') as f:
     vectorizer = pickle.load(f)
 
-# Ana sayfa
-@app.route('/')
-def home():
-    return render_template('index.html')
-
-# Kullanıcıdan metin alıp tahmin yapma
+# Tahmin
 @app.route('/predict', methods=['POST'])
 def predict():
-    if request.method == 'POST':
-        text = request.form['text']  # Kullanıcıdan alınan metin
-        text_tfidf = vectorizer.transform([text])  # Metni vektörleştir
-        prediction = model.predict(text_tfidf)  # Tahmin yap
-        return render_template('index.html', prediction=prediction[0], text=text)
+    data = request.get_json()
+    text = data.get('text', '').strip()
 
+    if not text:
+        return {"tahmin": "Lütfen metin girin."}
+
+    try:
+        text_tfidf = vectorizer.transform([text])
+
+        if text_tfidf.nnz == 0:
+            return {"tahmin": "Metin eğitim verisindeki kelimeleri içermiyor."}
+
+        prediction = model.predict(text_tfidf)
+        return {"tahmin": prediction[0]}
+
+    except Exception as e:
+        return {"tahmin": f"Hata: {str(e)}"}
 if __name__ == "__main__":
     app.run(debug=True)

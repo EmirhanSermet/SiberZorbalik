@@ -26,15 +26,23 @@
     </aside>
 
     <!-- Main Content -->
+    <!-- Main Content -->
     <div class="form-container">
       <h2>Mesajını Gir</h2>
+
+      <!-- Form sadece "Gönder" butonu için -->
       <form action="{{ url_for('predict') }}" method="post">
-        <textarea name="text" id="metin" placeholder="Buraya mesajını yaz..." required>{{ text if text else '' }}</textarea>
+        <textarea name="text" id="metin" placeholder="Buraya mesajını yaz..." oninput="analizEt()" required>{{ text if text else '' }}</textarea>
+
+        <!-- Bu div JS tarafından anında tahmin göstermek için kullanılır -->
+        <div id="sonuc" class="alert-box" style="display: none;"></div>
+
         <button type="submit">Gönder</button>
       </form>
 
+      <!-- Bu bölüm sadece form gönderilip sunucudan prediction döndüyse gösterilir -->
       {% if prediction %}
-        <div id="sonuc" class="alert-box">
+        <div class="alert-box">
           Tahmin: <strong>{{ prediction }}</strong>
         </div>
 
@@ -45,6 +53,7 @@
         {% endif %}
       {% endif %}
     </div>
+
 
     <div class="info-cards">
       <div class="card fade-in" id="bullyExamples" {% if not prediction or prediction|lower != 'zorbalık' %}style="display: none;"{% endif %}>
